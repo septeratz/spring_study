@@ -2,6 +2,7 @@ package com.example.forstudy.exdb.testtable;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,5 +17,12 @@ public class TestTableController {
         TestTableResDTO testTableResDTO = testTableService.showTable(testTableId);
 
         return new ResponseEntity<>(testTableResDTO, HttpStatus.OK);
+    }
+    @PostMapping("/testTable")
+    public ResponseEntity<TestTableResDTO> addTestTable(
+            @Validated @RequestBody TestTableReqDTO dto) {
+
+        TestTableResDTO saved = testTableService.addTable(dto);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);  // 201
     }
 }

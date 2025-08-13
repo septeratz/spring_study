@@ -4,6 +4,7 @@ import com.example.forstudy.exception.testtable.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -16,5 +17,16 @@ public class TestTableService {
                     new NotFoundUserException("존재하지 않는 사용자입니다.")
                 );
         return TestTableResDTO.fromTable(testTable);
+    }
+
+    public TestTableResDTO addTable(TestTableReqDTO dto) {
+        TestTable testTable =  new TestTable();
+        testTable.setName(dto.name());
+        testTable.setAge(dto.age());
+        testTable.setMemo(dto.memo());
+        LocalDateTime date = LocalDateTime.now();
+        testTable.setDate(date);
+
+        return TestTableResDTO.fromTable(testTableRepository.save(testTable));
     }
 }
