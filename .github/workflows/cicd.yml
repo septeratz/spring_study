@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app
-          path: build/libs/stadewpedia-0.0.1-SNAPSHOT.jar
+          path: build/libs/forstudy-0.0.1-SNAPSHOT.jar
 
       # 배포는 main 브랜치 push일 때만 실행
       - name: Download build artifact
@@ -61,8 +61,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             # 기존 파일/디렉토리 정리
-            rm -rf ~/stadewpedia.jar
-            rm -f ~/app/stadewpedia.jar
+            rm -rf ~/forstudy.jar
+            rm -f ~/app/forstudy.jar
             mkdir -p ~/app
 
       - name: Copy fat jar to server
@@ -72,7 +72,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "app/stadewpedia-0.0.1-SNAPSHOT.jar"
+          source: "app/forstudy-0.0.1-SNAPSHOT.jar"
           target: "~/app/"
           strip_components: 1
 
@@ -85,9 +85,9 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/app
-            mv stadewpedia-0.0.1-SNAPSHOT.jar stadewpedia.jar
-            chmod +x stadewpedia.jar
-            ls -la stadewpedia.jar  # 파일이 제대로 생성되었는지 확인
+            mv forstudy-0.0.1-SNAPSHOT.jar forstudy.jar
+            chmod +x forstudy.jar
+            ls -la forstudy.jar  # 파일이 제대로 생성되었는지 확인
 
       - name: Restart server app via systemd
         if: github.ref == 'refs/heads/main/master' && github.event_name == 'push'
@@ -98,5 +98,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             sudo systemctl daemon-reload
-            sudo systemctl restart stadewpedia
-            sudo systemctl status stadewpedia --no-pager
+            sudo systemctl restart forstudy
+            sudo systemctl status forstudy --no-pager
