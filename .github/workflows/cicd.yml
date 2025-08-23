@@ -46,14 +46,14 @@ jobs:
 
       # 배포는 main 브랜치 push일 때만 실행
       - name: Download build artifact
-        if: github.ref == 'refs/heads/main/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: actions/download-artifact@v4
         with:
           name: app
           path: ./app
 
       - name: Clean up existing files and copy jar
-        if: github.ref == 'refs/heads/main/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -66,7 +66,7 @@ jobs:
             mkdir -p ~/app
 
       - name: Copy fat jar to server
-        if: github.ref == 'refs/heads/main/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -77,7 +77,7 @@ jobs:
           strip_components: 1
 
       - name: Rename and set permissions
-        if: github.ref == 'refs/heads/main/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -90,7 +90,7 @@ jobs:
             ls -la forstudy.jar  # 파일이 제대로 생성되었는지 확인
 
       - name: Restart server app via systemd
-        if: github.ref == 'refs/heads/main/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
